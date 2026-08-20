@@ -1,12 +1,20 @@
 export interface Service {
   id: string
   name: string
-  salon_name: string
-  description?: string
-  price_range: string
-  city: string
   type_id: string
+  city: string
+  price_range: string
+  price_min?: number
+  price_max?: number
+  duration_minutes?: number
+  salon_name: string
+  salon_phone?: string
+  instagram_url?: string
+  whatsapp_url?: string
   image_url?: string
+  description?: string
+  created_at?: string
+  updated_at?: string
 }
 
 export interface HairstyleType {
@@ -14,32 +22,44 @@ export interface HairstyleType {
   name: string
 }
 
-export const mockHairstyleTypes: HairstyleType[] = [
+export const EXAMPLE_HAIRSTYLE_TYPES: HairstyleType[] = [
   { id: '1', name: 'Braids' },
   { id: '2', name: 'Locks' },
   { id: '3', name: 'Tresses simples' },
   { id: '4', name: 'Tissage' }
 ]
 
+export const mockHairstyleTypes = EXAMPLE_HAIRSTYLE_TYPES
+
 export const mockCities = ['Paris', 'Boulogne-Billancourt', 'Saint-Denis', 'Montreuil']
 
-export const mockServices: Service[] = [
+export const EXAMPLE_SERVICES: Service[] = [
   {
     id: 's1',
     name: 'Knotless Braids Moyennes',
-    salon_name: 'Afro Beauty Paris',
-    description: 'Coiffure protectrice réalisée avec soin, durée 4h.',
-    price_range: '80€ - 120€',
+    type_id: '1',
     city: 'Paris',
-    type_id: '1'
+    price_range: '80€ - 120€',
+    price_min: 80,
+    price_max: 120,
+    duration_minutes: 240,
+    salon_name: 'Afro Beauty Paris',
+    image_url: '',
+    description: 'Coiffure protectrice réalisée avec soin, durée 4h.'
   },
   {
     id: 's2',
     name: 'Départ de Locks',
-    salon_name: 'Locks & Co',
-    description: 'Création et départ de locks naturelles au crochet.',
-    price_range: '100€ - 150€',
+    type_id: '2',
     city: 'Saint-Denis',
-    type_id: '2'
+    price_range: '100€ - 150€',
+    price_min: 100,
+    price_max: 150,
+    duration_minutes: 180,
+    salon_name: 'Locks & Co',
+    image_url: '',
+    description: 'Création et départ de locks naturelles au crochet.'
   }
 ]
+
+export const mockServices = EXAMPLE_SERVICES
