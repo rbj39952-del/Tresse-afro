@@ -1,0 +1,23 @@
+import { Service } from '@/lib/data'
+
+interface ServiceCardProps {
+  service: Service
+  typeName?: string
+  onClick: () => void
+}
+
+export function ServiceCard({ service, typeName, onClick }: ServiceCardProps) {
+  return (
+    <div 
+      onClick={onClick}
+      className="border border-gray-200 p-5 rounded-2xl cursor-pointer hover:shadow-md transition bg-white"
+    >
+      <span className="text-xs font-semibold px-2,5 py-1 bg-gray-100 rounded-full text-gray-600">
+        {typeName || 'Coiffure'}
+      </span>
+      <h3 className="text-lg font-bold mt-2">{service.name}</h3>
+      <p className="text-sm text-gray-500">{service.salon_name} • {service.city}</p>
+      <p className="text-sm font-semibold text-black mt-4">{service.price_range}</p>
+    </div>
+  )
+}
