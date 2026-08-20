@@ -1,0 +1,45 @@
+export interface Service {
+  id: string
+  name: string
+  salon_name: string
+  description?: string
+  price_range: string
+  city: string
+  type_id: string
+  image_url?: string
+}
+
+export interface HairstyleType {
+  id: string
+  name: string
+}
+
+export const mockHairstyleTypes: HairstyleType[] = [
+  { id: '1', name: 'Braids' },
+  { id: '2', name: 'Locks' },
+  { id: '3', name: 'Tresses simples' },
+  { id: '4', name: 'Tissage' }
+]
+
+export const mockCities = ['Paris', 'Boulogne-Billancourt', 'Saint-Denis', 'Montreuil']
+
+export const mockServices: Service[] = [
+  {
+    id: 's1',
+    name: 'Knotless Braids Moyennes',
+    salon_name: 'Afro Beauty Paris',
+    description: 'Coiffure protectrice réalisée avec soin, durée 4h.',
+    price_range: '80€ - 120€',
+    city: 'Paris',
+    type_id: '1'
+  },
+  {
+    id: 's2',
+    name: 'Départ de Locks',
+    salon_name: 'Locks & Co',
+    description: 'Création et départ de locks naturelles au crochet.',
+    price_range: '100€ - 150€',
+    city: 'Saint-Denis',
+    type_id: '2'
+  }
+]
