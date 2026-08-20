@@ -1,0 +1,47 @@
+import { HairstyleType } from '@/lib/data'
+
+interface FilterPanelProps {
+  hairstyleTypes: HairstyleType[]
+  selectedType: string
+  selectedCity: string
+  selectedPrice: string
+  cities: string[]
+  onTypeChange: (val: string) => void
+  onCityChange: (val: string) => void
+  onPriceChange: (val: string) => void
+}
+
+export function FilterPanel({
+  hairstyleTypes,
+  selectedType,
+  selectedCity,
+  cities,
+  onTypeChange,
+  onCityChange
+}: FilterPanelProps) {
+  return (
+    <div className="flex flex-wrap gap-4">
+      <select
+        value={selectedType}
+        onChange={(e) => onTypeChange(e.target.value)}
+        className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
+      >
+        <option value="">Tous les types</option>
+        {hairstyleTypes.map((t) => (
+          <option key={t.id} value={t.id}>{t.name}</option>
+        ))}
+      </select>
+
+      <select
+        value={selectedCity}
+        onChange={(e) => onCityChange(e.target.value)}
+        className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
+      >
+        <option value="">Toutes les villes</option>
+        {cities.map((c) => (
+          <option key={c} value={c}>{c}</option>
+        ))}
+      </select>
+    </div>
+  )
+}
