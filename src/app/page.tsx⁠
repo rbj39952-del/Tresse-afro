@@ -1,0 +1,117 @@
+'use client'
+
+import { useState, useMemo } from 'react'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
+import { SearchBar } from '@/components/SearchBar'
+import { FilterPanel } from '@/components/FilterPanel'
+import { ServiceCard } from '@/components/ServiceCard'
+import { ServiceModal } from '@/components/ServiceModal'
+import { mockServices, mockHairstyleTypes, mockCities, Service } from '@/lib/data'
+
+export default function Home() {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedType, setSelectedType] = useState('')
+  const [selectedCity, setSelectedCity] = useState('')
+  const [selectedPrice, setSelectedPrice] = useState('')
+  const [selectedService, setSelectedService] = useState<Service | null>(null)
+
+  const filteredServices = useMemo(() => {
+    return mockServices.filter((service) => {
+      const matchesSearch =
+        service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        service.salon_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        service.description?.toLowerCase().includes(searchQuery.toLowerCase())
+
+      const matchesType = !selectedType || service.type_id === selectedType
+      const matchesCity = !selectedCity || service.city === selectedCity
+      const matchesPrice = !selectedPrice || service.price_range === selectedPrice
+
+      return matchesSearch && matchesType && matchesCity && matchesPrice
+    })
+  }, [searchQuery, selectedType, selectedCity, selectedPrice])
+
+  const getTypeMap = useMemo(() => {
+    return mockHairstyleTypes.reduce((acc, type) => {
+      acc[type.id] = type.name
+      return acc
+    }, {} as Record<string, string>)
+  }, [])
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      <Header />
+
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div className="space-y-3">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            Trouvez votre coiffure afro idéale
+          </h1>
+          <p className="text-muted text-base sm:text-lg">
+            Découvrez les meilleurs salons et coiffeuses à Paris et en Île-de-France.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <SearchBar value={searchQuery} onChange={setSearchQuery} />
+          <FilterPanel
+            hairstyleTypes={mockHairstyleTypes}
+            selectedType={selectedType}
+            selectedCity={selectedCity}
+            selectedPrice={selectedPrice}
+            cities={mockCities}
+            onTypeChange={setSelectedType}
+            onCityChange={setSelectedCity}
+            onPriceChange={setSelectedPrice}
+          />
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between mb-6">
+            <p className="text-sm text-muted">
+              {filteredServices.length}{' '}
+              {filteredServices.length > 1 ? 'résultats trouvés' : 'résultat trouvé'}
+            </p>
+          </div>
+
+          {filteredServices.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredServices.map((service) => (
+                <ServiceCard
+                  key={service.id}
+                  service={service}
+                  typeName={getTypeMap[service.type_id]}
+                  onClick={() => setSelectedService(service)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16 bg-surface rounded-2xl border border-border">
+              <p className="text-muted font-medium">Aucun résultat trouvé pour votre recherche.</p>
+              <button
+                onClick={() => {
+                  setSearchQuery('')
+                  setSelectedType('')
+                  setSelectedCity('')
+                  setSelectedPrice('')
+                }}
+                className="mt-4 btn btn-secondary text-xs"
+              >
+                Réinitialiser les filtres
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
+
+      <Footer />
+
+      <ServiceModal
+        service={selectedService}
+        typeName={selectedService ? getTypeMap[selectedService.type_id] : undefined}
+        isOpen={!!selectedService}
+        onClose={() => setSelectedService(null)}
+      />
+    </div>
+  )
+}
